@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Maui;
+using InventoryCleanApp.Pages;
+using InventoryCleanApp.Services;
 using Microsoft.Extensions.Logging;
 
 namespace InventoryCleanApp
@@ -20,6 +22,10 @@ namespace InventoryCleanApp
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
+            builder.Services.AddTransient<AuthService>();
+            builder.Services.AddTransient<LoadingPage>();
+            builder.Services.AddTransient<LoginPage>();
+            builder.Services.AddTransient<ResetPasswordPage>();
 
             return builder.Build();
         }

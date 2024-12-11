@@ -9,29 +9,42 @@
     Shell.TabBarIsVisible="True"
     Title="ALMAC-IMS">
 
-    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
-        <ShellContent
-        Title="Loading"
-        ContentTemplate="{DataTemplate pages:LoadingPage}"
-        Route="LoadingPage" />
+    <ShellContent
+    Title="Loading"
+    ContentTemplate="{DataTemplate pages:LoadingPage}"
+    Route="LoadingPage" 
+    Shell.FlyoutBehavior="Disabled"
+    Shell.FlyoutItemIsVisible="False"
+        />
 
-        <ShellContent
-        Title="Login"
-        ContentTemplate="{DataTemplate pages:LoginPage}"
-        Route="LoginPage" />
+    <ShellContent
+    Title="Login"
+    ContentTemplate="{DataTemplate pages:LoginPage}"
+    Route="LoginPage" 
+    Shell.FlyoutBehavior="Disabled"
+    Shell.FlyoutItemIsVisible="False"
+        />
 
+    
+
+    <TabBar>
         <ShellContent
         Title="ResetPassword"
         ContentTemplate="{DataTemplate pages:ResetPasswordPage}"
         Route="ResetPasswordPage" />
 
-        
+
         <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate pages:Home}"
         Route="Home" />
+        
+    </TabBar>
 
-        <ShellContent
+    <!--<FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+        
+
+        --><!--<ShellContent
         Title="Pos"
         ContentTemplate="{DataTemplate pages:PosPage}"
         Route="PosPage" />
@@ -39,9 +52,9 @@
         <ShellContent
         Title="Sales"
         ContentTemplate="{DataTemplate pages:SalesPage}"
-        Route="SalesPage" />
+        Route="SalesPage" />--><!--
 
-    </FlyoutItem>
+    </FlyoutItem>-->
     <!--<TabBar>
         --><!--<ShellContent
         Title="Pos"
