@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:InventoryCleanApp"
     xmlns:pages="clr-namespace:InventoryCleanApp.Pages"
     Shell.FlyoutBehavior="Flyout"
+    Shell.TabBarIsVisible="True"
     Title="ALMAC-IMS">
 
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
@@ -24,7 +25,7 @@
         ContentTemplate="{DataTemplate pages:ResetPasswordPage}"
         Route="ResetPasswordPage" />
 
-
+        
         <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate pages:Home}"
@@ -41,4 +42,28 @@
         Route="SalesPage" />
 
     </FlyoutItem>
+    <!--<TabBar>
+        --><!--<ShellContent
+        Title="Pos"
+        ContentTemplate="{DataTemplate pages:PosPage}"
+        Route="PosPage" />
+
+        <ShellContent
+        Title="Sales"
+        ContentTemplate="{DataTemplate pages:SalesPage}"
+        Route="SalesPage" />--><!--
+        <Tab>
+            <ShellContent
+            Title="Sales"
+            ContentTemplate="{DataTemplate pages:SalesPage}"
+            Route="SalesPage" />
+        </Tab>
+        <Tab>
+            <ShellContent
+            Title="Pos"
+            ContentTemplate="{DataTemplate pages:PosPage}"
+            Route="PosPage" />
+        </Tab>
+
+    </TabBar>-->
 </Shell>
