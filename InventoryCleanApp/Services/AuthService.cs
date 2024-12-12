@@ -1,27 +1,89 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using InventoryCleanApp.Models;
+using Newtonsoft.Json;
+using System.Net.Http.Json;
 
 namespace InventoryCleanApp.Services;
 
 public class AuthService
 {
-    private const string AuthStateKey = "AuthState";
-    public async Task<bool> IsAuthenticated()
+    //private const string AuthStateKey = "AuthState";
+    private readonly HttpClient _httpClient;
+
+    public AuthService(IHttpClientFactory httpClientFactory)
     {
-        await Task.Delay(2000);
-        var AuthState = Preferences.Default.Get<bool>(AuthStateKey, false);
-        return AuthState;
+        _httpClient = httpClientFactory.CreateClient(ApplicationConstants.HttpClientName);
+    }
+    public static async Task<bool> IsAuthenticated()
+    {
+        try
+        {
+            var SerializedAuth = await SecureStorage.Default.GetAsync(ApplicationConstants.AuthKeyName);
+
+            return !string.IsNullOrWhiteSpace(SerializedAuth);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+        //await Task.Delay(2000);
+        //var AuthState = Preferences.Default.Get<bool>(AuthStateKey, false);
+        //return AuthState;
     }
 
-    public void Login()
+    public async Task<HttpClient> GetAuthenticatedHttpclient()
     {
-        Preferences.Default.Set<bool>(AuthStateKey, true);
+        try
+        {
+            var SerializedAuth = await SecureStorage.Default.GetAsync(ApplicationConstants.AuthKeyName);
+
+            var userSession = JsonConvert.DeserializeObject<LoginResponse>(SerializedAuth!);
+
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", userSession!.Token);
+
+            return _httpClient;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    public async Task<string?> Login(Login login)
+    {
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync<Login>("api/Authentication/login", login);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                LoginResponse? Auth = JsonConvert.DeserializeObject<LoginResponse>(content);
+                var SerializedAuth = JsonConvert.SerializeObject(Auth);
+                await SecureStorage.Default.SetAsync(ApplicationConstants.AuthKeyName, SerializedAuth);
+                return null;
+            }
+            else
+            {
+                return response.ReasonPhrase;
+            }
+
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+        //Preferences.Default.Set<bool>(AuthStateKey, true);
     }
     public void Logout()
     {
-        Preferences.Default.Remove(AuthStateKey);
+        try
+        {
+            SecureStorage.Default.Remove(ApplicationConstants.AuthKeyName);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
     }
 }

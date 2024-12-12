@@ -15,7 +15,7 @@ public partial class LoadingPage : ContentPage
     protected async override void OnNavigatedTo(NavigatedToEventArgs args)
     {
         base.OnNavigatedTo(args);
-        if (await _authService.IsAuthenticated())
+        if (await AuthService.IsAuthenticated())
         {
             await Shell.Current.GoToAsync($"//{nameof(Home)}");
         }
