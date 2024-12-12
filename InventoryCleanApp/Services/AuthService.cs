@@ -54,10 +54,10 @@ public class AuthService
         try
         {
             var response = await _httpClient.PostAsJsonAsync<Login>("api/Authentication/login", login);
-
+            var content = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
-                var content = await response.Content.ReadAsStringAsync();
+                
                 LoginResponse? Auth = JsonConvert.DeserializeObject<LoginResponse>(content);
                 var SerializedAuth = JsonConvert.SerializeObject(Auth);
                 await SecureStorage.Default.SetAsync(ApplicationConstants.AuthKeyName, SerializedAuth);
@@ -65,7 +65,8 @@ public class AuthService
             }
             else
             {
-                return response.ReasonPhrase;
+                //var content = await response.Content.ReadAsStringAsync();
+                return content;
             }
 
         }
