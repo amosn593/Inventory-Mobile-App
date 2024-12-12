@@ -19,12 +19,12 @@
                 <Grid Margin="0,30,0,0" ColumnDefinitions=".2*, .8*">
                     <!--<Label Text="Email" Margin="15,0,0,0" VerticalOptions="Center"/>-->
                     <Image HorizontalOptions="Center" Source="email.png" WidthRequest="35" HeightRequest="40" />
-                    <Entry Grid.Column="1" Placeholder="EMAIL" VerticalOptions="Center" />
+                    <Entry x:Name="LoginEmail" Grid.Column="1" Placeholder="EMAIL" VerticalOptions="Center" />
                 </Grid>
                 <Grid Margin="0,30,0,0" ColumnDefinitions=".2*, .8*">
                     <!--<Label Text="PASSWORD" Margin="15,0,0,0" VerticalOptions="Center"/>-->
                     <Image HorizontalOptions="Center" Source="password.png" WidthRequest="35" HeightRequest="40" />
-                    <Entry Grid.Column="1" IsPassword="True" Placeholder="PASSWORD" VerticalOptions="Center" />
+                    <Entry x:Name="Password" Grid.Column="1" IsPassword="True" Placeholder="PASSWORD" VerticalOptions="Center" />
                 </Grid>
                 <Button Margin="0,50,0,0" 
                         BackgroundColor="#4F3F9D"

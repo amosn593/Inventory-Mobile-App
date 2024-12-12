@@ -14,7 +14,7 @@ public partial class LoginPage : ContentPage
 
     private async void Clicked_login_button(object sender, EventArgs e)
     {
-        var response = await _authService.Login(new Login {Email= "amungata@kcaa.or.ke", Password= "Joshua@2020" });
+        var response = await _authService.Login(new Login {Email="", Password= "Joshua@2020" });
         if (string.IsNullOrWhiteSpace(response))
         {
             await Shell.Current.GoToAsync($"//{nameof(Home)}");
