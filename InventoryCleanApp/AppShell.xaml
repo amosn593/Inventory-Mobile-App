@@ -5,46 +5,59 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:InventoryCleanApp"
     xmlns:pages="clr-namespace:InventoryCleanApp.Pages"
+    Title="ALMAC-IMS"
     Shell.FlyoutBehavior="Flyout"
     Shell.TabBarIsVisible="True"
-    Title="ALMAC-IMS">
-
-    <ShellContent
-    Title="Loading"
-    ContentTemplate="{DataTemplate pages:LoadingPage}"
-    Route="LoadingPage" 
-    Shell.FlyoutBehavior="Disabled"
-    Shell.FlyoutItemIsVisible="False"
-        />
-
-    <ShellContent
-    Title="Login"
-    ContentTemplate="{DataTemplate pages:LoginPage}"
-    Route="LoginPage" 
-    Shell.FlyoutBehavior="Disabled"
-    Shell.FlyoutItemIsVisible="False"
-        />
+    >
 
     
+    <ShellContent
+        Title="Loading"
+        ContentTemplate="{DataTemplate pages:LoadingPage}"
+        Route="LoadingPage"
+        Shell.FlyoutBehavior="Disabled"
+        Shell.FlyoutItemIsVisible="False" />
+
+    <ShellContent
+        Title="Login"
+        ContentTemplate="{DataTemplate pages:LoginPage}"
+        Route="LoginPage"
+        Shell.FlyoutBehavior="Disabled"
+        Shell.FlyoutItemIsVisible="False" />
+
+    <ShellContent
+        Title="ResetPassword"
+        ContentTemplate="{DataTemplate pages:ResetPasswordPage}"
+        Route="ResetPasswordPage"
+        Shell.FlyoutBehavior="Flyout"
+        Shell.FlyoutItemIsVisible="True" />
+
+
 
     <TabBar>
         <ShellContent
-        Title="ResetPassword"
-        ContentTemplate="{DataTemplate pages:ResetPasswordPage}"
-        Route="ResetPasswordPage" />
+            Title="Store"
+            ContentTemplate="{DataTemplate pages:InventoryPage}"
+            Route="InventoryPage" />
 
 
         <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate pages:Home}"
-        Route="Home" />
+            Title="Home"
+            ContentTemplate="{DataTemplate pages:Home}"
+            Route="Home" />
         
+        <ShellContent
+        Title="Pos"
+        ContentTemplate="{DataTemplate pages:PosPage}"
+        Route="PosPage" />
+
     </TabBar>
 
     <!--<FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
-        
 
-        --><!--<ShellContent
+
+    -->
+    <!--<ShellContent
         Title="Pos"
         ContentTemplate="{DataTemplate pages:PosPage}"
         Route="PosPage" />
@@ -52,11 +65,13 @@
         <ShellContent
         Title="Sales"
         ContentTemplate="{DataTemplate pages:SalesPage}"
-        Route="SalesPage" />--><!--
+        Route="SalesPage" />-->
+    <!--
 
     </FlyoutItem>-->
     <!--<TabBar>
-        --><!--<ShellContent
+    -->
+    <!--<ShellContent
         Title="Pos"
         ContentTemplate="{DataTemplate pages:PosPage}"
         Route="PosPage" />
@@ -64,7 +79,8 @@
         <ShellContent
         Title="Sales"
         ContentTemplate="{DataTemplate pages:SalesPage}"
-        Route="SalesPage" />--><!--
+        Route="SalesPage" />-->
+    <!--
         <Tab>
             <ShellContent
             Title="Sales"

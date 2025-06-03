@@ -12,6 +12,7 @@ namespace InventoryCleanApp
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
             Routing.RegisterRoute(nameof(Home), typeof(Home));
             Routing.RegisterRoute(nameof(ResetPasswordPage), typeof(ResetPasswordPage));
+            Routing.RegisterRoute(nameof(InventoryPage), typeof(InventoryPage));
         }
     }
 }

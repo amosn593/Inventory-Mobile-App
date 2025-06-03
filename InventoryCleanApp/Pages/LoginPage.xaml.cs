@@ -1,5 +1,6 @@
 using InventoryCleanApp.Models;
 using InventoryCleanApp.Services;
+using InventoryCleanApp.ViewModels;
 
 namespace InventoryCleanApp.Pages;
 
@@ -9,6 +10,7 @@ public partial class LoginPage : ContentPage
     public LoginPage(AuthService authService)
 	{
 		InitializeComponent();
+        BindingContext = new LoginViewModel(authService);
         //_authService = authService;
     }
 

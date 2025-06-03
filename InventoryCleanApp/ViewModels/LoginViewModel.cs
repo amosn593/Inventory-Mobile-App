@@ -13,18 +13,18 @@ public partial class LoginViewModel : ObservableObject
     {
         _authService = authService;
     }
+    
     [ObservableProperty]
-    private string? email;
-    [ObservableProperty]
-    private string? password;
+    private Login login = new();     
 
     [RelayCommand]
     private async Task LoginUser()
     {
         Console.WriteLine("Button clicked!");
-        var response = await _authService.Login(new Login { Email = Email, Password = Password });
+        var response = await _authService.Login(new Login { Email = Login.Email, Password = Login.Password });
         if (string.IsNullOrWhiteSpace(response))
         {
+            Login = new();
             await Shell.Current.GoToAsync($"//{nameof(Home)}");
         }
         else

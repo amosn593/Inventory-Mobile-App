@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="InventoryCleanApp.Pages.InventoryPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:InventoryCleanApp.Models"
+    xmlns:vm="clr-namespace:InventoryCleanApp.ViewModels"
+    Title="Store"
+    x:DataType="vm:StoreViewModel"
+    Shell.NavBarIsVisible="True">
+
+    <!--  Custom Title View  -->
+    <Shell.TitleView>
+        <Label
+            Margin="0,10,0,5"
+            FontAttributes="Bold"
+            FontSize="30"
+            HorizontalOptions="Start"
+            HorizontalTextAlignment="Start"
+            Text="Store"
+            TextColor="DarkSlateBlue" />
+    </Shell.TitleView>
+
+
+    <Grid Padding="10" RowDefinitions="Auto, Auto, Auto, *">
+
+        <VerticalStackLayout Padding="10" Spacing="10" />
+
+        <!--  Search Bar  -->
+        <SearchBar
+            Grid.Row="1"
+            CancelButtonColor="Gray"
+            FontSize="16"
+            Placeholder="Search products..."
+            Text="{Binding SearchQuery}" />
+
+        <!--  Activity Indicator  -->
+        <ActivityIndicator
+            Grid.Row="2"
+            IsRunning="{Binding IsBusy}"
+            IsVisible="{Binding IsBusy}" />
+
+        <!--  Scrollable List  -->
+
+        <CollectionView
+            Grid.Row="3"
+            ItemsSource="{Binding Products}"
+            RemainingItemsThreshold="2"
+            RemainingItemsThresholdReachedCommand="{Binding LoadNextPageCommand}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Product">
+                    <Border
+                        Margin="5"
+                        Padding="10"
+                        Stroke="LightGray"
+                        StrokeShape="RoundRectangle 10"
+                        StrokeThickness="1">
+                        <Grid ColumnDefinitions="*, Auto, Auto" RowDefinitions="Auto, Auto">
+
+                            <VerticalStackLayout
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="3">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    Text="{Binding Name}" />
+                                <Label
+                                    FontSize="14"
+                                    Text="{Binding Code}"
+                                    TextColor="Gray" />
+                                <Label Text="{Binding BuyingPrice, StringFormat='BuyingPrice: KSH{0:F2}'}" TextColor="DarkGreen" />
+                                <Label Text="{Binding SellingPrice, StringFormat='SellingPrice: KSH{0:F2}'}" TextColor="DarkRed" />
+                            </VerticalStackLayout>
+
+                            <Button
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="2"
+                                BackgroundColor="LightGreen"
+                                Command="{Binding BindingContext.StockInCommand, Source={x:Reference Name=InventoryListPage}}"
+                                CommandParameter="{Binding}"
+                                Text="Stock In" />
+
+                            <Button
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                Margin="2"
+                                BackgroundColor="LightCoral"
+                                Command="{Binding BindingContext.StockOutCommand, Source={x:Reference Name=InventoryListPage}}"
+                                CommandParameter="{Binding}"
+                                Text="Stock Out" />
+
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
+
+</ContentPage>

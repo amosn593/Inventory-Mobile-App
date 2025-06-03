@@ -21,23 +21,21 @@ namespace InventoryCleanApp
                 });
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
             builder.Services.AddTransient<AuthService>();
             builder.Services.AddTransient<LoadingPage>();
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<ResetPasswordPage>();
-            
+            builder.Services.AddTransient<InventoryPage>();
+
             builder.Services
                     .AddHttpClient(ApplicationConstants.HttpClientName, client =>
                     {
                         client.BaseAddress = new Uri(ApplicationConstants.Live_BaseURI);
-                        client.Timeout = TimeSpan.FromSeconds(500);
+                        client.Timeout = TimeSpan.FromSeconds(60);
                     });
-                    //.AddPolicyHandler(PollyPolicy.GetRetryPolicy())
-                    //.AddPolicyHandler(PollyPolicy.GetCircuitBreakerPolicy());
-
-
+            
             return builder.Build();
         }
     }

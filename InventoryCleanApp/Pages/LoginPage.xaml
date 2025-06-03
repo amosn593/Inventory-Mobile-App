@@ -21,12 +21,13 @@
                 <Grid Margin="0,30,0,0" ColumnDefinitions=".2*, .8*">
                     <!--<Label Text="Email" Margin="15,0,0,0" VerticalOptions="Center"/>-->
                     <Image HorizontalOptions="Center" Source="email.png" WidthRequest="35" HeightRequest="40" />
-                    <Entry Grid.Column="1" Placeholder="Email"  VerticalOptions="Center" Text="{Binding Email}" />
+                    <Entry Grid.Column="1" Placeholder="Email"  VerticalOptions="Center" Text="{Binding Login.Email}" />
+
                 </Grid>
                 <Grid Margin="0,30,0,0" ColumnDefinitions=".2*, .8*">
                     <!--<Label Text="PASSWORD" Margin="15,0,0,0" VerticalOptions="Center"/>-->
                     <Image HorizontalOptions="Center" Source="password.png" WidthRequest="35" HeightRequest="40" />
-                    <Entry Grid.Column="1" Placeholder="Password" IsPassword="True" VerticalOptions="Center" Text="{Binding Password}" />
+                    <Entry Grid.Column="1" Placeholder="Password" IsPassword="True" VerticalOptions="Center" Text="{Binding Login.Password}" />
                 </Grid>
                 <Button Margin="0,50,0,0" 
                         BackgroundColor="#4F3F9D"
@@ -39,4 +40,5 @@
             
         </Grid>
     </Grid>
+
 </ContentPage>

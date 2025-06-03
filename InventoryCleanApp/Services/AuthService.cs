@@ -36,6 +36,11 @@ public class AuthService
         {
             var SerializedAuth = await SecureStorage.Default.GetAsync(ApplicationConstants.AuthKeyName);
 
+            if (string.IsNullOrWhiteSpace(SerializedAuth))
+            {
+                throw new Exception("User is not authenticated. Please log in.");
+            }
+
             var userSession = JsonConvert.DeserializeObject<LoginResponse>(SerializedAuth!);
 
             _httpClient.DefaultRequestHeaders.Authorization =
