@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace InventoryCleanApp.Models;
+namespace InventoryCleanApp.Entities;
 
 public class Product
 {

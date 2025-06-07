@@ -1,18 +1,25 @@
-using InventoryCleanApp.Services;
 using InventoryCleanApp.ViewModels;
-using System.Collections.ObjectModel;
 
 namespace InventoryCleanApp.Pages;
 
 public partial class InventoryPage : ContentPage
 {
-   
-    public InventoryPage(AuthService authService)
+    private readonly StoreViewModel _storeViewModel;
+
+    public InventoryPage(StoreViewModel storeViewModel)
 	{
 		InitializeComponent();
-        BindingContext = new StoreViewModel(authService);
-
+        _storeViewModel = storeViewModel;
+        BindingContext = _storeViewModel;
     }
 
-  
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if (BindingContext is StoreViewModel vm)
+            await vm.LoadProductsCommand.ExecuteAsync(null);
+    }
+
+
 }

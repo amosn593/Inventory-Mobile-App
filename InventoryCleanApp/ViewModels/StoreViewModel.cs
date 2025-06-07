@@ -17,15 +17,19 @@ public partial class StoreViewModel : ObservableObject
     private const int PageSize = 10;
     private readonly AuthService _authService;
 
-    
-    [ObservableProperty]
-    private ObservableCollection<Product> products = [];
+    public StoreViewModel(AuthService authService)
+    {
+        _authService = authService;
+
+    }
+
+    public ObservableCollection<ProductModel> Products { get; set; } = [];
 
     [ObservableProperty]
     private bool isBusy;
 
     [ObservableProperty]
-    private string searchQuery;
+    private string? searchQuery;
 
     [ObservableProperty]
     private int currentPage = 1;
@@ -33,31 +37,21 @@ public partial class StoreViewModel : ObservableObject
     [ObservableProperty]
     private bool hasMoreItems;
 
-
-    public StoreViewModel(AuthService authService)
+    [RelayCommand]
+    public async Task LoadProductsAsync()
     {
-        _authService = authService;
-        LoadProductsCommand = new AsyncRelayCommand(LoadProductsAsync);
-        LoadProductsCommand.Execute(null); // Load on startup
-        
-    }
-
-    public IAsyncRelayCommand LoadProductsCommand { get; }
-
-    private async Task LoadProductsAsync()
-    {
-        if (IsBusy ) return;
-        IsBusy = true;
+        if (IsBusy) return;
 
         try
         {
+            IsBusy = true;
+            Products.Clear();
             var httpClient = await _authService.GetAuthenticatedHttpclient();
 
-            var productList = await httpClient.GetFromJsonAsync<List<Product>>("api/Product/GetProducts");
+            var productList = await httpClient.GetFromJsonAsync<List<ProductModel>>("api/Product/GetProducts");
 
-            Products.Clear();
-            foreach (var item in productList)
-                Products.Add(item);
+            foreach (var product in productList)
+                Products.Add(product);
 
             HasMoreItems = false;
         }
@@ -84,20 +78,20 @@ public partial class StoreViewModel : ObservableObject
     {
         // Reset state on new search
         CurrentPage = 1;
-        products.Clear();
+        //products.Clear();
         HasMoreItems = true;
         _ = LoadProductsAsync();
     }
 
     [RelayCommand]
-    private void StockIn(Product item)
+    private void StockIn(ProductModel item)
     {
         // Handle stock in logic
         Console.WriteLine($"Stock In: {item.Name}");
     }
 
     [RelayCommand]
-    private void StockOut(Product item)
+    private void StockOut(ProductModel item)
     {
         // Handle stock out logic
         Console.WriteLine($"Stock Out: {item.Name}");

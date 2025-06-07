@@ -2,6 +2,7 @@
 using InventoryCleanApp.Models;
 using InventoryCleanApp.Pages;
 using InventoryCleanApp.Services;
+using InventoryCleanApp.ViewModels;
 using Microsoft.Extensions.Logging;
 
 namespace InventoryCleanApp
@@ -28,6 +29,7 @@ namespace InventoryCleanApp
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<ResetPasswordPage>();
             builder.Services.AddTransient<InventoryPage>();
+            builder.Services.AddTransient<StoreViewModel>();
 
             builder.Services
                     .AddHttpClient(ApplicationConstants.HttpClientName, client =>
