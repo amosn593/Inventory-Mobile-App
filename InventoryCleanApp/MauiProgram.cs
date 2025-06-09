@@ -24,12 +24,14 @@ namespace InventoryCleanApp
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
+            builder.Logging.AddDebug();
             builder.Services.AddTransient<AuthService>();
             builder.Services.AddTransient<LoadingPage>();
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<ResetPasswordPage>();
             builder.Services.AddTransient<InventoryPage>();
             builder.Services.AddTransient<StoreViewModel>();
+            builder.Services.AddSingleton<ProductRepo>();
 
             builder.Services
                     .AddHttpClient(ApplicationConstants.HttpClientName, client =>

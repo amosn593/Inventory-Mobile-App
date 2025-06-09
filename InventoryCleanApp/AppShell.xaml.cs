@@ -13,6 +13,17 @@ namespace InventoryCleanApp
             Routing.RegisterRoute(nameof(Home), typeof(Home));
             Routing.RegisterRoute(nameof(ResetPasswordPage), typeof(ResetPasswordPage));
             Routing.RegisterRoute(nameof(InventoryPage), typeof(InventoryPage));
+
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+            {
+                System.Diagnostics.Debug.WriteLine($"[UnhandledException] {e.ExceptionObject}");
+            };
+
+            TaskScheduler.UnobservedTaskException += (s, e) =>
+            {
+                System.Diagnostics.Debug.WriteLine($"[UnobservedTaskException] {e.Exception}");
+                e.SetObserved();
+            };
         }
     }
 }

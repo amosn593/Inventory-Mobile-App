@@ -11,15 +11,19 @@ public partial class InventoryPage : ContentPage
 		InitializeComponent();
         _storeViewModel = storeViewModel;
         BindingContext = _storeViewModel;
+        //Initialized();
     }
 
-    protected override async void OnAppearing()
-    {
-        base.OnAppearing();
+    //protected override async void OnAppearing()
+    //{
+    //    base.OnAppearing();
+    //    await _storeViewModel.InitAsync();
+    //}
 
-        if (BindingContext is StoreViewModel vm)
-            await vm.LoadProductsCommand.ExecuteAsync(null);
-    }
+    //private async Task Initialized()
+    //{
+    //    await _storeViewModel.InitAsync();
+    //}
 
 
 }

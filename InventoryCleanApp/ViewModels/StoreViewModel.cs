@@ -5,25 +5,32 @@ using InventoryCleanApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace InventoryCleanApp.ViewModels;
 
 public partial class StoreViewModel : ObservableObject
 {
-    private const int PageSize = 10;
-    private readonly AuthService _authService;
+    private readonly ProductRepo _productRepo;
 
-    public StoreViewModel(AuthService authService)
+    public StoreViewModel(ProductRepo productRepo)
     {
-        _authService = authService;
-
+        _productRepo = productRepo;
+        LoadProductsCommand.Execute(null); // Initial load
+       
     }
 
     public ObservableCollection<ProductModel> Products { get; set; } = [];
+
+    private int _page = 1;
+    private const int PageSize = 10;
+    private bool _isLastPage = true;
+
 
     [ObservableProperty]
     private bool isBusy;
@@ -31,33 +38,36 @@ public partial class StoreViewModel : ObservableObject
     [ObservableProperty]
     private string? searchQuery;
 
-    [ObservableProperty]
-    private int currentPage = 1;
-
-    [ObservableProperty]
-    private bool hasMoreItems;
+    [ObservableProperty] 
+    private bool isRefreshing;
 
     [RelayCommand]
-    public async Task LoadProductsAsync()
+    public async Task LoadProducts()
     {
         if (IsBusy) return;
-
         try
         {
             IsBusy = true;
+            _page = 1;
+            _isLastPage = false;
             Products.Clear();
-            var httpClient = await _authService.GetAuthenticatedHttpclient();
+            var newRecords = await _productRepo.GetProductsAsync(_page, SearchQuery);
+            //Debug.WriteLine($"Loaded {newRecords.Items.Count} products on page {_page}");
+            //await Shell.Current.DisplayAlert("Error", "Failed to load products. Please try again later.", "OK");
+            //Products = new ObservableCollection<ProductModel>(newRecords.Items);
+            //Products = newRecords.Items;
+            foreach (var record in newRecords.Items)
+            {
 
-            var productList = await httpClient.GetFromJsonAsync<List<ProductModel>>("api/Product/GetProducts");
-
-            foreach (var product in productList)
-                Products.Add(product);
-
-            HasMoreItems = false;
+                Products.Add(record);
+            }
+            if (newRecords.MetaData.HasNext)
+                _isLastPage = false;
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"API Error: {ex.Message}");
+            Debug.WriteLine($"Error loading products: {ex.Message}");
+            await Shell.Current.DisplayAlert("Error", "Failed to load products. Please try again later.", "OK");
         }
         finally
         {
@@ -66,23 +76,45 @@ public partial class StoreViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void LoadNextPage()
+    private async Task Refresh()
     {
-        if (IsBusy || !HasMoreItems)
-            return;
-        CurrentPage++;
-        _ = LoadProductsAsync();
+        IsRefreshing = true;
+        await LoadProducts();
+        IsRefreshing = false;
     }
 
-    partial void OnSearchQueryChanged(string value)
+    [RelayCommand]
+    private async Task LoadMore()
     {
-        // Reset state on new search
-        CurrentPage = 1;
-        //products.Clear();
-        HasMoreItems = true;
-        _ = LoadProductsAsync();
+        if (IsBusy || _isLastPage) return;
+        try
+        {
+            IsBusy = true;
+            _page++;
+            var moreRecords = await _productRepo.GetProductsAsync(_page, SearchQuery);
+
+            //Products.ToArray().Add; (moreRecords.Items);
+
+            foreach (var record in moreRecords.Items)
+            {
+                Products.Add(record);
+            }
+                
+
+            if (moreRecords.MetaData.HasNext)
+                _isLastPage = false;
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
 
+    [RelayCommand]
+    private async Task Search()
+    {
+        await LoadProducts();
+    }
     [RelayCommand]
     private void StockIn(ProductModel item)
     {
